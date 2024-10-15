@@ -2,7 +2,6 @@ package kr.gateway.serviceImpl;
 
 import kr.gateway.document.LoginRequest;
 import kr.gateway.document.OAuth2Request;
-import kr.gateway.document.UserInfoDTO;
 import kr.gateway.service.AuthService;
 import kr.gateway.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,6 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
