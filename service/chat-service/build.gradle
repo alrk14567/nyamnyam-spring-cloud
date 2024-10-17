@@ -62,6 +62,10 @@ dependencies {
 
     // 테스트 관련 의존성
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 }
 
 tasks.named('test') {
