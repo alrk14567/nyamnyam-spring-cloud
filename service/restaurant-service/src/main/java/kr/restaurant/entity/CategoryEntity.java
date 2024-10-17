@@ -1,4 +1,4 @@
-package kr.restaurant.entity;//package kr.restaurant.entity;
+//package kr.restaurant.entity;
 //
 //import jakarta.persistence.*;
 //import lombok.Data;
