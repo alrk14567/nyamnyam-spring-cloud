@@ -31,6 +31,7 @@ public class ReceiptController {
     private final ImageService imageService;
     private final ReceiptService receiptService;
 
+
     @Value("${naver.service.secretKey}")
     private String secretKey;
 

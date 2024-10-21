@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/api/chats")
 public class ChatController {
 
