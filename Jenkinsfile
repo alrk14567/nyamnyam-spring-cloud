@@ -21,7 +21,7 @@ pipeline {
              stage('Git Clone') {
                         steps {
                             script {
-                            sh 'pwd'
+                                sh 'pwd'
 
                                 dir('nyamnyam.kr/server/config-server') {
                                     git branch: 'main', url: 'https://github.com/alrk14567/nyamnyam-config-server.git', credentialsId: 'github_nyamnyam_access_token'
@@ -72,37 +72,43 @@ pipeline {
                             }
                         }
                     }
-                }
+        }
 
-          stage('Login to Docker Hub') {
-                            steps {
-                                sh '''
-                                echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
-                                '''
-                            }
-                 }
+        stage('Login to Docker Hub') {
+            steps {
+                sh '''
+                    echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+                '''
+            }
+        }
 
 
-            stage('Docker Push') {
-                        steps {
-                            script {
-
-                                def servicesList = env.services.split(',')
-
-                                servicesList.each { service ->
-                                    def serviceName = service.split('/')[1] // 서비스 이름 추출
-                                    // 각 서비스의 Docker 이미지를 푸시
-                                    sh "docker push ${DOCKER_CREDENTIALS_ID}/nyamnyam-${serviceName}:latest"
-                                }
-                            }
-                        }
+        stage('Docker Push') {
+            steps {
+                script {
+                    def servicesList = env.services.split(',')
+                    servicesList.each { service ->
+                                            def serviceName = service.split('/')[1] // 서비스 이름 추출
+                                            // 각 서비스의 Docker 이미지를 푸시
+                                            sh "docker push ${DOCKER_CREDENTIALS_ID}/nyamnyam-${serviceName}:latest"
                     }
+                }
+            }
+        }
 
 
         stage('Cleaning up') {
-            steps {
-                sh "docker rmi ${repository}:latest" // Clean up the pushed image
-            }
+                    steps {
+                        script {
+                            // 각 서비스의 이미지 삭제
+                            def servicesList = env.services.split(',')
+                            servicesList.each { service ->
+                                def serviceName = service.split('/')[1] // 서비스 이름 추출
+                                sh "docker rmi ${DOCKER_CREDENTIALS_ID}/nyamnyam-${serviceName}:latest" // Clean up the pushed image
+                            }
+                        }
+                    }
         }
     }
 }
+
