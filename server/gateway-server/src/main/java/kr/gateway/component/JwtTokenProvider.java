@@ -8,8 +8,6 @@ import kr.gateway.document.Token;
 import kr.gateway.repository.TokenRepository;
 import kr.gateway.repository.UserRepository;
 import lombok.Getter;
-import net.minidev.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +17,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 
-import javax.crypto.SecretKey;
+
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Collections;

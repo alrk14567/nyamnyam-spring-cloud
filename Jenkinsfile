@@ -52,12 +52,6 @@ pipeline {
 
                                }
 
-                               // gateway-server 빌드
-                               dir('server/gateway-server') {
-                                   sh '../../gradlew clean build'
-
-                               }
-
                                dir('service/admin-service') {
                                    sh '../../gradlew clean build'
 
@@ -82,6 +76,12 @@ pipeline {
                                    sh '../../gradlew clean build'
 
                                }
+
+                               // gateway-server 빌드
+                               dir('server/gateway-server') {
+                               sh '../../gradlew clean build'
+                               }
+
                            }
                        }
                    }
