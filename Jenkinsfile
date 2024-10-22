@@ -49,7 +49,6 @@ pipeline {
                                // eureka-server 빌드
                                dir('server/eureka-server') {
                                    sh '../../gradlew clean build'
-
                                }
 //                                // gateway-server 빌드
 //                                dir('server/gateway-server') {
