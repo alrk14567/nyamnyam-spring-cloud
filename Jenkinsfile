@@ -73,34 +73,47 @@ pipeline {
             }
         }
 
-        stage('Docker Push') {
-            steps {
-                script {
-                    sh 'docker tag nyamnyam/config-server alrk/nyamnyam-config-server:latest'
-                    sh 'docker push alrk/nyamnyam-config-server:latest'
 
-                    sh 'docker tag nyamnyam/eureka alrk/nyamnyam-eureka-server:latest'
-                    sh 'docker push alrk/nyamnyam-eureka-server:latest'
-
-                    sh 'docker tag nyamnyam/gateway-server alrk/nyamnyam-gateway-server:latest'
-                    sh 'docker push alrk/nyamnyam-gateway-server:latest'
-
-                    sh 'docker tag nyamnyam/admin-service alrk/nyamnyam-admin-service:latest'
-                    sh 'docker push alrk/nyamnyam-admin-service:latest'
-
-                    sh 'docker tag nyamnyam/chat-service alrk/nyamnyam-chat-service:latest'
-                    sh 'docker push alrk/nyamnyam-chat-service:latest'
-
-                    sh 'docker tag nyamnyam/post-service alrk/nyamnyam-post-service:latest'
-                    sh 'docker push alrk/nyamnyam-post-service:latest'
-
-                    sh 'docker tag nyamnyam/restaurant-service alrk/nyamnyam-restaurant-service:latest'
-                    sh 'docker push alrk/nyamnyam-restaurant-service:latest'
-
-                    sh 'docker tag nyamnyam/user-service alrk/nyamnyam-user-service:latest'
-                    sh 'docker push alrk/nyamnyam-user-service:latest'
+        stages {
+                stage('Docker Login') {
+                    steps {
+                        script {
+                            // Jenkins Credentials에서 ID를 사용하여 로그인
+                            withCredentials([usernamePassword(credentialsId: 'docker_hub_Id', usernameVariable: 'cdutik@gmail.com', passwordVariable: 'gkdl0547!23')]) {
+                                sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                            }
+                        }
+                    }
                 }
-            }
+                stage('Docker Push') {
+                    steps {
+                        script {
+                            sh 'docker tag nyamnyam/config-server alrk/nyamnyam-config-server:latest'
+                            sh 'docker push alrk/nyamnyam-config-server:latest'
+
+                            sh 'docker tag nyamnyam/eureka alrk/nyamnyam-eureka-server:latest'
+                            sh 'docker push alrk/nyamnyam-eureka-server:latest'
+
+                            sh 'docker tag nyamnyam/gateway-server alrk/nyamnyam-gateway-server:latest'
+                            sh 'docker push alrk/nyamnyam-gateway-server:latest'
+
+                            sh 'docker tag nyamnyam/admin-service alrk/nyamnyam-admin-service:latest'
+                            sh 'docker push alrk/nyamnyam-admin-service:latest'
+
+                            sh 'docker tag nyamnyam/chat-service alrk/nyamnyam-chat-service:latest'
+                            sh 'docker push alrk/nyamnyam-chat-service:latest'
+
+                            sh 'docker tag nyamnyam/post-service alrk/nyamnyam-post-service:latest'
+                            sh 'docker push alrk/nyamnyam-post-service:latest'
+
+                            sh 'docker tag nyamnyam/restaurant-service alrk/nyamnyam-restaurant-service:latest'
+                            sh 'docker push alrk/nyamnyam-restaurant-service:latest'
+
+                            sh 'docker tag nyamnyam/user-service alrk/nyamnyam-user-service:latest'
+                            sh 'docker push alrk/nyamnyam-user-service:latest'
+                                }
+                            }
+                }
         }
 
         stage('Cleaning up') {
