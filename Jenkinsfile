@@ -2,9 +2,10 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_CREDENTIALS_ID = 'docker_hub_Id'
+        DOCKER_CREDENTIALS_ID = 'alrk'
         DOCKER_IMAGE_PREFIX = 'alrk/nyam-config-server'
          services = "server/config-server,server/eureka-server,server/gateway-server,service/admin-service,service/chat-service,service/post-service,service/restaurant-service,service/user-service"
+         DOCKERHUB_CREDENTIALS = credentials('docker_hub_Id')
     }
 
     stages {
@@ -60,61 +61,43 @@ pipeline {
         }
 
         stage('Build Docker Images') {
-            steps {
-                script {
-                    dir('nyamnyam.kr') {
-                        sh "cd server/config-server && docker build -t nyamnyam/config-server:latest ."
-                    }
-
-                    dir('nyamnyam.kr') {
-                        sh "docker-compose build"
-                    }
-                }
-            }
-        }
-
-
-        stages {
-                stage('Docker Login') {
                     steps {
                         script {
-                            // Jenkins Credentials에서 ID를 사용하여 로그인
-                            withCredentials([usernamePassword(credentialsId: 'docker_hub_Id', usernameVariable: 'cdutik@gmail.com', passwordVariable: 'gkdl0547!23')]) {
-                                sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                            dir('nyamnyam.kr') {
+                                sh "cd server/config-server && docker build -t ${DOCKER_CREDENTIALS_ID}/nyamnyam-config-server:latest ."
+                            }
+
+                            dir('nyamnyam.kr') {
+                                sh "docker-compose build"
                             }
                         }
                     }
                 }
-                stage('Docker Push') {
-                    steps {
-                        script {
-                            sh 'docker tag nyamnyam/config-server alrk/nyamnyam-config-server:latest'
-                            sh 'docker push alrk/nyamnyam-config-server:latest'
 
-                            sh 'docker tag nyamnyam/eureka alrk/nyamnyam-eureka-server:latest'
-                            sh 'docker push alrk/nyamnyam-eureka-server:latest'
+          stage('Login to Docker Hub') {
+                            steps {
+                                sh '''
+                                echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+                                '''
+                            }
+                 }
 
-                            sh 'docker tag nyamnyam/gateway-server alrk/nyamnyam-gateway-server:latest'
-                            sh 'docker push alrk/nyamnyam-gateway-server:latest'
 
-                            sh 'docker tag nyamnyam/admin-service alrk/nyamnyam-admin-service:latest'
-                            sh 'docker push alrk/nyamnyam-admin-service:latest'
+            stage('Docker Push') {
+                        steps {
+                            script {
 
-                            sh 'docker tag nyamnyam/chat-service alrk/nyamnyam-chat-service:latest'
-                            sh 'docker push alrk/nyamnyam-chat-service:latest'
+                                def servicesList = env.services.split(',')
 
-                            sh 'docker tag nyamnyam/post-service alrk/nyamnyam-post-service:latest'
-                            sh 'docker push alrk/nyamnyam-post-service:latest'
-
-                            sh 'docker tag nyamnyam/restaurant-service alrk/nyamnyam-restaurant-service:latest'
-                            sh 'docker push alrk/nyamnyam-restaurant-service:latest'
-
-                            sh 'docker tag nyamnyam/user-service alrk/nyamnyam-user-service:latest'
-                            sh 'docker push alrk/nyamnyam-user-service:latest'
+                                servicesList.each { service ->
+                                    def serviceName = service.split('/')[1] // 서비스 이름 추출
+                                    // 각 서비스의 Docker 이미지를 푸시
+                                    sh "docker push ${DOCKER_CREDENTIALS_ID}/nyamnyam-${serviceName}:latest"
                                 }
                             }
-                }
-        }
+                        }
+                    }
+
 
         stage('Cleaning up') {
             steps {
