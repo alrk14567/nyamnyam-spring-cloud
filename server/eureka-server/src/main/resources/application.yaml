@@ -5,3 +5,8 @@ eureka:
   client:
     register-with-eureka: false
     fetch-registry: false
+spring:
+  profiles:
+    active: local
+  config:
+    import: optional:configserver:http://localhost:8888
