@@ -7,6 +7,6 @@ eureka:
     fetch-registry: false
 spring:
   profiles:
-    active: local
+    active: prod
   config:
-    import: optional:configserver:http://localhost:8888
+    import: optional:configserver:http://211.188.50.33:8888
