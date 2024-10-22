@@ -11,7 +11,7 @@ services:
     networks:
       - nyamnyam-kr
     healthcheck:
-      test: ["CMD-SHELL", "curl -sS http://localhost:8761/actuator/health | grep -q '\"status\":\"UP\"'"]
+      test: ["CMD-SHELL", "curl -sS http://211.188.50.33:8761/actuator/health | grep -q '\"status\":\"UP\"'"]
       interval: 10s
       timeout: 10s
       retries: 5
@@ -31,7 +31,7 @@ services:
     networks:
       - nyamnyam-kr
     healthcheck:
-      test: ["CMD-SHELL", "curl -sS http://localhost:8000/actuator/health | grep -q '\"status\":\"UP\"'"]
+      test: ["CMD-SHELL", "curl -sS http://211.188.50.33:8000/actuator/health | grep -q '\"status\":\"UP\"'"]
       interval: 10s
       timeout: 10s
       retries: 5
