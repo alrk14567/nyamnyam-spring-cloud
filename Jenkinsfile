@@ -59,18 +59,6 @@ pipeline {
                    }
         }
 
-         stage("Docker Image Remove") {
-                    steps {
-                        script {
-                            services.split(',').each { service ->
-                                sh "docker rmi -f $COMPOSE_TAGNAME/${service}:$PUSH_VERSION"
-                                sh "docker rmi -f $DOCKERHUB_CREDENTIALS_USR/${service}:$PUSH_VERSION"
-                            }
-                        }
-                    }
-         }
-
-
         stage('Build Docker Images') {
             steps {
                 script {
