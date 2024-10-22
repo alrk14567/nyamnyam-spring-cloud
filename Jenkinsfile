@@ -51,37 +51,10 @@ pipeline {
                                    sh '../../gradlew clean build'
 
                                }
-
-                               dir('service/admin-service') {
-                                   sh '../../gradlew clean build'
-
-                               }
-
-                               dir('service/chat-service') {
-                                   sh '../../gradlew clean build'
-
-                               }
-
-                               dir('service/post-service') {
-                                   sh '../../gradlew clean build'
-
-                               }
-
-                               dir('service/restaurant-service') {
-                                   sh '../../gradlew clean build'
-
-                               }
-
-                               dir('service/user-service') {
-                                   sh '../../gradlew clean build'
-
-                               }
-
                                // gateway-server 빌드
                                dir('server/gateway-server') {
                                sh '../../gradlew clean build'
                                }
-
                            }
                        }
                    }
