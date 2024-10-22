@@ -67,7 +67,7 @@ pipeline {
                     }
 
                     dir('nyamnyam.kr') {
-                        sh "docker-compose up --build -d"
+                        sh "docker-compose up -d"
                     }
                 }
             }
