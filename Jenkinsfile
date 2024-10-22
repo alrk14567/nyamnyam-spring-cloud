@@ -4,6 +4,7 @@ pipeline {
     environment {
         DOCKER_CREDENTIALS_ID = 'docker_hub_Id'
         DOCKER_IMAGE_PREFIX = 'alrk/nyam-config-server'
+         services = "server/config-server,server/eureka-server,server/gateway-server,service/admin-service,service/chat-service,service/post-service,service/restaurant-service,service/user-service"
     }
 
     stages {
@@ -42,18 +43,16 @@ pipeline {
                            dir('nyamnyam.kr') {
                                sh 'chmod +x gradlew' // gradlew에 실행 권한 부여
 
-                               // config-server 빌드
-                               dir('server/config-server') {
-                                   sh '../../gradlew clean build'
+                               // services 환경 변수를 Groovy 리스트로 변환
+                               def servicesList = env.services.split(',')
+
+
+                               servicesList.each { service ->
+                                                       dir(service) {
+                                                           sh "../../gradlew clean build --warning-mode all -x test"
+
+                                                       }
                                }
-                               // eureka-server 빌드
-                               dir('server/eureka-server') {
-                                   sh '../../gradlew clean build'
-                               }
-//                                // gateway-server 빌드
-//                                dir('server/gateway-server') {
-//                                sh '../../gradlew clean build'
-//                                }
                            }
                        }
                    }
