@@ -48,10 +48,10 @@ pipeline {
 
 
                                servicesList.each { service ->
-                                                       dir(service) {
-                                                           sh "../../gradlew clean build --warning-mode all -x test"
-
-                                                       }
+                                   dir(service) {
+                                       // ./gradlew clean bootJar 명령어 실행
+                                       sh "../../gradlew clean bootJar"
+                                   }
                                }
                            }
                        }
