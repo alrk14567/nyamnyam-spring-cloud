@@ -51,10 +51,10 @@ pipeline {
                                    sh '../../gradlew clean build'
 
                                }
-                               // gateway-server 빌드
-                               dir('server/gateway-server') {
-                               sh '../../gradlew clean build'
-                               }
+//                                // gateway-server 빌드
+//                                dir('server/gateway-server') {
+//                                sh '../../gradlew clean build'
+//                                }
                            }
                        }
                    }
@@ -64,13 +64,12 @@ pipeline {
             steps {
                 script {
                     dir('nyamnyam.kr') {
-                        sh "cd nyamnyam.kr/server/config-server && docker build -t alrk/nyam-config-server:latest ."
+                        sh "cd server/config-server && docker build -t alrk/nyam-config-server:latest ."
                     }
 
                     dir('nyamnyam.kr') {
                         sh "docker-compose up --build -d"
                     }
-
                 }
             }
         }
