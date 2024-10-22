@@ -63,7 +63,7 @@ pipeline {
             steps {
                 script {
                     dir('nyamnyam.kr') {
-                        sh "cd server/config-server && docker build -t alrk/nyam-config-server:latest ."
+                        sh "cd server/config-server && docker build -t nyamnyam/config-server:latest ."
                     }
 
                     dir('nyamnyam.kr') {
@@ -76,7 +76,29 @@ pipeline {
         stage('Docker Push') {
             steps {
                 script {
-                    sh 'docker push ${repository}:latest' // Push the correct repository
+                    sh 'docker tag nyamnyam/config-server alrk/nyamnyam-config-server:latest'
+                    sh 'docker push alrk/nyamnyam-config-server:latest'
+
+                    sh 'docker tag nyamnyam/eureka alrk/nyamnyam-eureka-server:latest'
+                    sh 'docker push alrk/nyamnyam-eureka-server:latest'
+
+                    sh 'docker tag nyamnyam/gateway-server alrk/nyamnyam-gateway-server:latest'
+                    sh 'docker push alrk/nyamnyam-gateway-server:latest'
+
+                    sh 'docker tag nyamnyam/admin-service alrk/nyamnyam-admin-service:latest'
+                    sh 'docker push alrk/nyamnyam-admin-service:latest'
+
+                    sh 'docker tag nyamnyam/chat-service alrk/nyamnyam-chat-service:latest'
+                    sh 'docker push alrk/nyamnyam-chat-service:latest'
+
+                    sh 'docker tag nyamnyam/post-service alrk/nyamnyam-post-service:latest'
+                    sh 'docker push alrk/nyamnyam-post-service:latest'
+
+                    sh 'docker tag nyamnyam/restaurant-service alrk/nyamnyam-restaurant-service:latest'
+                    sh 'docker push alrk/nyamnyam-restaurant-service:latest'
+
+                    sh 'docker tag nyamnyam/user-service alrk/nyamnyam-user-service:latest'
+                    sh 'docker push alrk/nyamnyam-user-service:latest'
                 }
             }
         }
