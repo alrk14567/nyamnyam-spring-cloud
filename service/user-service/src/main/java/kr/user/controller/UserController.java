@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/api/user")
 public class UserController {
 
     private final UserService userService;
@@ -52,6 +52,12 @@ public class UserController {
     public Mono<User> join(@RequestPart("user") User user,
                            @RequestPart(name = "thumbnails", required = false) List<MultipartFile> thumbnails) {
         return userService.save(user, thumbnails     != null ? thumbnails : Collections.emptyList());
+    }
+
+
+    @PostMapping("/login")
+    public Mono<String> login(@RequestParam String username, @RequestParam String password) {
+        return userService.authenticate(username, password);
     }
 
     @GetMapping("/check-username")
