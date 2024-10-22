@@ -55,11 +55,6 @@ public class UserController {
     }
 
 
-    @PostMapping("/login")
-    public Mono<String> login(@RequestParam String username, @RequestParam String password) {
-        return userService.authenticate(username, password);
-    }
-
     @GetMapping("/check-username")
     public Mono<Boolean> checkUsername(@RequestParam String username) {
         return userService.findByUsername(username)

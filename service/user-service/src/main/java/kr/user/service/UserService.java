@@ -25,6 +25,4 @@ public interface UserService {
 
     Mono<User> save(User user, List<MultipartFile> thumbnails);
 
-    Mono<String> authenticate(String username, String password);
-
 }
