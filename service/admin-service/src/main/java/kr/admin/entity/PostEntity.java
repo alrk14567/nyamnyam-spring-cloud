@@ -45,15 +45,18 @@ public class PostEntity {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<PostTagEntity> postTags = new ArrayList<>();
+    @Builder.Default
+    private final List<PostTagEntity> postTags = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<ImageEntity> images = new ArrayList<>();
+    @Builder.Default
+    private final List<ImageEntity> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<ReportEntity> reportEntities = new ArrayList<>();
+    @Builder.Default
+    private final List<ReportEntity> reportEntities = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")  // FK 설정
