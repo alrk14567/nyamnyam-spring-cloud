@@ -2,45 +2,95 @@ pipeline {
     agent any
 
     environment {
-        repository = "alrk/nyam-config-server"  // docker hub id와 repository 이름
-        DOCKERHUB_CREDENTIALS = credentials('docker_hub_Id') // Jenkins에 등록해 놓은 docker hub credentials 이름
-        dockerImage = "alrk/nyam-config-server"
+        DOCKER_CREDENTIALS_ID = 'docker_hub_Id'
+        DOCKER_IMAGE_PREFIX = 'alrk/nyam-config-server'
     }
 
     stages {
-        stage('Clone Spring Cloud repository') {
-            steps {
-                // Spring Cloud 리포지토리 클론
-                git url: 'https://github.com/alrk14567/nyamnyam-spring-cloud.git', branch: 'main'
+            stage('Checkout SCM') {
+                steps {
+                    script {
+                        dir('nyamnyam.kr') {
+                            checkout scm
+                        }
+                    }
+                }
             }
+             stage('Git Clone') {
+                        steps {
+                            script {
+                            sh 'pwd'
+
+                                dir('nyamnyam.kr/server/config-server') {
+                                    git branch: 'main', url: 'https://github.com/alrk14567/nyamnyam-config-server.git', credentialsId: 'github_nyamnyam_access_token'
+                                }
+
+                                dir ('nyamnyam.kr/server/config-server/src/main/resources/secret-server') {
+                                    git branch: 'main', url: 'https://github.com/alrk14567/nyamnyam-secret-server.git', credentialsId: 'github_nyamnyam_access_token'
+
+                                }
+                            }
+                        }
+             }
+
+
+
+        stage('Build JAR') {
+                   steps {
+                       script {
+                           // 각 서버에 대해 gradlew를 실행
+                           dir('nyamnyam.kr') {
+                               sh 'chmod +x gradlew' // gradlew에 실행 권한 부여
+
+                               // config-server 빌드
+                               dir('server/config-server') {
+                                   sh '../../gradlew clean build'
+                               }
+                               // eureka-server 빌드
+                               dir('server/eureka-server') {
+                                   sh '../../gradlew clean build'
+
+                               }
+
+                               // gateway-server 빌드
+                               dir('server/gateway-server') {
+                                   sh '../../gradlew clean build'
+
+                               }
+
+                               dir('service/admin-service') {
+                                   sh '../../gradlew clean build'
+
+                               }
+
+                               dir('service/chat-service') {
+                                   sh '../../gradlew clean build'
+
+                               }
+
+                               dir('service/post-service') {
+                                   sh '../../gradlew clean build'
+
+                               }
+
+                               dir('service/restaurant-service') {
+                                   sh '../../gradlew clean build'
+
+                               }
+
+                               dir('service/user-service') {
+                                   sh '../../gradlew clean build'
+
+                               }
+                           }
+                       }
+                   }
         }
 
-        stage('Clone Config Server into Spring Cloud directory') {
-            steps {
-                // /server/config-server에 Config Server 리포지토리 클론
-                sh '''
-                cd nyamnyam-spring-cloud/server
-                git clone https://github.com/alrk14567/nyamnyam-config-server.git config-server
-                '''
-            }
-        }
 
-        stage('Clone Secret Server into Config Server resources') {
-            steps {
-                // /config-server/main/resources/에 Secret Server 리포지토리 클론
-                sh '''
-                cd nyamnyam-spring-cloud/server/config-server/src/main/resources
-                git clone https://github.com/alrk14567/nyamnyam-secret-server.git secret-server
-                '''
-            }
-        }
 
-        stage('Grant execute permissions') {
-            steps {
-                // gradlew 파일에 실행 권한 부여
-                sh 'chmod +x gradlew'
-            }
-        }
+
+
 
         stage('Build Microservices') {
             parallel {
