@@ -6,6 +6,10 @@ pipeline {
         DOCKER_IMAGE_PREFIX = 'alrk/nyam-config-server'
          services = "server/config-server,server/eureka-server,server/gateway-server,service/admin-service,service/chat-service,service/post-service,service/restaurant-service,service/user-service"
          DOCKERHUB_CREDENTIALS = credentials('docker_hub_Id')
+          KUBECONFIG_CREDENTIALS_ID = 'kubeconfig'
+          NCP_API_KEY = credentials('ncloud-api-key')
+          NCP_SECRET_KEY = credentials('ncloud-secret-key')
+
     }
 
     stages {
