@@ -110,20 +110,27 @@ pipeline {
                     }
         }
 
-        stage('Deploy to K8s') {
-            steps {
-                script {
-                    // deploy.yaml 파일 수정
-                    sh "sed -i 's,TEST_IMAGE_NAME,${DOCKER_IMAGE_PREFIX}:latest,' deploy.yaml"
-                    sh "cat deploy.yaml"
-                    // Kubernetes에서 현재 Pod 상태 확인
-                    sh "kubectl --kubeconfig=/home/ec2-user/config get pods"
-                    // deploy.yaml을 Kubernetes에 적용
-                    sh "kubectl --kubeconfig=/home/ec2-user/config apply -f deploy.yaml"
-                }
-            }
+        stage('Deploy to k8s') {
+                    steps {
+                        script {
+                            withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                                // 환경 변수로 API Key와 Secret Key 설정 후 ncp-iam-authenticator에 전달
+                                sh '''
+                                export NCP_ACCESS_KEY=$NCP_API_KEY
+                                export NCP_SECRET_KEY=$NCP_SECRET_KEY
+                                kubectl apply -f deploy/was/config-server/config-server.yaml --kubeconfig=$KUBECONFIG
+                                kubectl apply -f deploy/was/eureka-server/eureka-server.yaml --kubeconfig=$KUBECONFIG
+                                kubectl apply -f deploy/was/gateway-server/gateway-server.yaml --kubeconfig=$KUBECONFIG
+                                kubectl apply -f deploy/was/admin-service/admin-service.yaml --kubeconfig=$KUBECONFIG
+                                kubectl apply -f deploy/was/chat-service/chat-service.yaml --kubeconfig=$KUBECONFIG
+                                kubectl apply -f deploy/was/post-service/post-service.yaml --kubeconfig=$KUBECONFIG
+                                kubectl apply -f deploy/was/restaurant-service/restaurant-service.yaml --kubeconfig=$KUBECONFIG
+                                kubectl apply -f deploy/was/user-service/user-service.yaml --kubeconfig=$KUBECONFIG
+                                '''
+                            }
+                        }
+                    }
         }
-
     }
 }
 
