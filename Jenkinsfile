@@ -118,6 +118,18 @@ pipeline {
                     }
         }
 
+        stage('Create Namespace') {
+                    steps {
+                        script {
+                            withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                                sh '''
+                                kubectl apply -f nyamnyam.kr/deploy/namespace/nyamnyam-namespace.yaml --kubeconfig=$KUBECONFIG
+                                '''
+                            }
+                        }
+                    }
+        }
+
         stage('Create ConfigMap') {
             steps {
                 script {
@@ -148,7 +160,6 @@ pipeline {
                                 sh '''
                                 export NCP_ACCESS_KEY=$NCP_API_KEY
                                 export NCP_SECRET_KEY=$NCP_SECRET_KEY
-                                kubectl apply -f nyamnyam.kr/deploy/namespace/nyamnyam-namespace.yaml --kubeconfig=$KUBECONFIG
                                 kubectl apply -f nyamnyam.kr/deploy/was/config-server/config-server.yaml --kubeconfig=$KUBECONFIG
                                 kubectl apply -f nyamnyam.kr/deploy/was/eureka-server/eureka-server.yaml --kubeconfig=$KUBECONFIG
                                 kubectl apply -f nyamnyam.kr/deploy/was/gateway-server/gateway-server.yaml --kubeconfig=$KUBECONFIG
