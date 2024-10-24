@@ -119,13 +119,16 @@ pipeline {
         }
 
         stage('Create ConfigMap') {
-                    steps {
-                        script {
-                            sh '''
-                            kubectl create configmap config-server --from-file=nyamnyam.kr/server/config-server/src/main/resources/application.yaml -n nyamnyam --dry-run=client -o yaml | kubectl apply -f -
-                            '''
-                        }
+            steps {
+                script {
+                    withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                        sh '''
+                        # ConfigMap 생성 및 적용
+                        kubectl create configmap config-server --from-file=nyamnyam.kr/server/config-server/src/main/resources/application.yaml -n nyamnyam --dry-run=client -o yaml | kubectl apply -f -
+                        '''
                     }
+                }
+            }
         }
 
 
