@@ -27,6 +27,10 @@ pipeline {
                             script {
                                 sh 'pwd'
 
+                                dir('nyamnyam.kr/deploy') {
+                                    git branch: 'main', url: 'https://github.com/alrk14567/nyamnyam-deploy.git', credentialsId: 'github_nyamnyam_access_token'
+                                }
+
                                 dir('nyamnyam.kr/server/config-server') {
                                     git branch: 'main', url: 'https://github.com/alrk14567/nyamnyam-config-server.git', credentialsId: 'github_nyamnyam_access_token'
                                 }
