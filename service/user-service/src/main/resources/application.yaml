@@ -2,6 +2,12 @@ spring:
   application:
     name: user-service
   profiles:
-    active: prod
+    active: local
   config:
+    import: optional:configserver:http://localhost:8888
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
     import: optional:configserver:http://211.188.50.33:8888

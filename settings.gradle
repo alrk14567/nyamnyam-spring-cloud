@@ -7,4 +7,5 @@ include 'service:chat-service'
 include 'service:post-service'
 include 'service:restaurant-service'
 include 'service:user-service'
+include 'service:home-service'
 
