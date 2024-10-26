@@ -43,7 +43,6 @@ public class ChatController {
     }
 
     //얘는 보낸 메세지를 바로 채널에다가  뿌려주는 친구
-    @CrossOrigin("*")
     @GetMapping(value = "/{chatRoomId}")
     public Flux<Chat> getMessageByChannel(@PathVariable String chatRoomId) {
 
