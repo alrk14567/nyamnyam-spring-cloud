@@ -8,7 +8,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface ChatService {
-    Mono<String> uploadFile(MultipartFile file);
+//    Mono<String> uploadFile(MultipartFile file);
 
     Flux<Chat> mFindBySender(String sender, String chatRoomId);
 
