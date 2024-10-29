@@ -3,7 +3,7 @@ package kr.chat.controller;
 
 
 
-import jakarta.ws.rs.NotFoundException;
+import com.amazonaws.services.kms.model.NotFoundException;
 import kr.chat.document.Chat;
 import kr.chat.service.ChatRoomService;
 import kr.chat.service.ChatService;
