@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/user")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -48,17 +48,28 @@ public class UserController {
         return userService.update(user, thumbnails);
     }
 
-    @PostMapping("/join")
-    public Mono<User> join(@RequestPart("user") User user,
+    @PostMapping("/register")
+    public Mono<User> register(@RequestPart("user") User user,
                            @RequestPart(name = "thumbnails", required = false) List<MultipartFile> thumbnails) {
         return userService.save(user, thumbnails     != null ? thumbnails : Collections.emptyList());
     }
-
 
     @GetMapping("/check-username")
     public Mono<Boolean> checkUsername(@RequestParam String username) {
         return userService.findByUsername(username)
                 .hasElement();
+    }
+
+    @PostMapping("/oauth/register")
+    public Mono<User> oauthRegister(@RequestParam String oauthId,
+                                    @RequestParam String username,
+                                    @RequestParam String nickname,
+                                    @RequestParam String name,
+                                    @RequestParam String ageRange,
+                                    @RequestParam String tel,
+                                    @RequestParam String gender,
+                                    @RequestParam String profileImage) {
+        return userService.saveOAuthUser(oauthId, username, nickname, name, ageRange, tel, gender, profileImage);
     }
 
 }
