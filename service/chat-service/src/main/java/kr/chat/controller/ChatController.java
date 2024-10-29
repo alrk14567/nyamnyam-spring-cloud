@@ -3,7 +3,7 @@ package kr.chat.controller;
 
 
 
-import com.amazonaws.services.kms.model.NotFoundException;
+
 import kr.chat.document.Chat;
 import kr.chat.service.ChatRoomService;
 import kr.chat.service.ChatService;
@@ -69,9 +69,9 @@ public class ChatController {
 
     @PutMapping("/{chatId}/read/{nickname}")
     public Mono<Chat> updateReadBy(@PathVariable String chatId, @PathVariable String nickname) {
-        return chatService.updateReadBy(chatId, nickname)
-                .switchIfEmpty(Mono.error(new NotFoundException("Chat not found")));  // 채팅이 없을 경우 예외 처리
+        return chatService.updateReadBy(chatId, nickname);
     }
+
 
 
 
