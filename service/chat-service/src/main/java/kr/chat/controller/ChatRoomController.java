@@ -1,7 +1,7 @@
 package kr.chat.controller;
 
 
-import com.amazonaws.services.kms.model.NotFoundException;
+import jakarta.ws.rs.NotFoundException;
 import kr.chat.document.ChatRoom;
 import kr.chat.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;

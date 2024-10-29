@@ -1,22 +1,17 @@
 package kr.chat.serviceImpl;
 
 
-import com.amazonaws.services.s3.AmazonS3;
 import kr.chat.document.Chat;
 import kr.chat.repository.ChatRepository;
 import kr.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 
 @Service
