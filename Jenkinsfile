@@ -150,6 +150,17 @@ pipeline {
             }
         }
 
+        stage('Deploy Ingress Controller') {
+             steps {
+                 script {
+                     withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                         sh '''
+                         kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml --kubeconfig=$KUBECONFIG
+                         '''
+                     }
+                 }
+             }
+         }
 
 
         stage('Deploy to k8s') {
@@ -173,6 +184,8 @@ pipeline {
                         }
                     }
         }
+
+
 
         stage('Deploy Ingress') {
             steps {
