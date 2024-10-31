@@ -15,7 +15,10 @@ public class CorsConfiguration {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         org.springframework.web.cors.CorsConfiguration config = new org.springframework.web.cors.CorsConfiguration();
 
-        config.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000"));
+        config.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000",
+                "https://nyamnyam-vercel-8ftz8fj23-alrk14567s-projects.vercel.app", // Vercel 도메인 추가
+                "https://kidon.nyamnyam.kr", // 다른 도메인도 추가 가능
+                "https://www.kidon.nyamnyam.kr"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(Arrays.asList("*"));
         config.setExposedHeaders(Arrays.asList("*"));
