@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ChatRoomServiceImpl implements ChatRoomService {
@@ -19,7 +21,23 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
     @Override
     public Mono<ChatRoom> save(ChatRoom chatRoom) {
+        // 참가자 목록 정렬
+        chatRoom.setParticipants(
+                chatRoom.getParticipants().stream().sorted().toList()
+        );
+        // 정렬된 참가자 목록으로 채팅방 저장
         return chatRoomRepository.save(chatRoom);
+    }
+
+
+    @Override
+    public Mono<ChatRoom> findByParticipants(List<String> participants) {
+        // 참가자 목록 정렬
+        List<String> sortedParticipants = participants.stream().sorted().toList();
+
+        // 정렬된 목록으로 채팅방 조회
+        return chatRoomRepository.findByParticipants(sortedParticipants)
+                .switchIfEmpty(Mono.empty()); // 존재하지 않으면 Mono.empty() 반환
     }
 
     @Override

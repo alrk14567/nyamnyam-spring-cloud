@@ -9,19 +9,33 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/api/chatRoom")
+@RequestMapping("/chatRoom")
 public class ChatRoomController {
     private final ChatRoomService chatRoomService;
 
 
     @PostMapping("/save")
     public Mono<ChatRoom> save(@RequestBody ChatRoom chatRoom) {
-        return chatRoomService.save(chatRoom);
+        return chatRoomService.save(chatRoom)
+                .switchIfEmpty(Mono.error(new RuntimeException("Failed to save chat room")));
     }
+
+    @PostMapping("/check")
+    public Mono<ChatRoom> check(@RequestBody ChatRoom chatRoom) {
+        // 참가자 목록 정렬
+        List<String> sortedParticipants = chatRoom.getParticipants().stream().sorted().toList();
+        chatRoom.setParticipants(sortedParticipants);
+
+        return chatRoomService.findByParticipants(sortedParticipants)
+                .switchIfEmpty(Mono.empty());
+    }
+
 
 
 
@@ -32,10 +46,6 @@ public class ChatRoomController {
         return chatRoomService.findAllByNickname(nickname);
     }
 
-    @PutMapping("/{id}")
-    public Mono<ChatRoom> updateChatRoom(@PathVariable String id, @RequestBody ChatRoom chatRoom) {
-        return chatRoomService.updateChatRoom(id, chatRoom);
-    }
 
     @GetMapping("/{id}")
     public Mono<ChatRoom> findById(@PathVariable String id) {

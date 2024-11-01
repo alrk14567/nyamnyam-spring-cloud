@@ -20,7 +20,8 @@ import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/chats")
+@CrossOrigin
+@RequestMapping("/chats")
 public class ChatController {
 
     private final ChatService chatService;
@@ -44,7 +45,7 @@ public class ChatController {
     }
 
     //얘는 보낸 메세지를 바로 채널에다가  뿌려주는 친구
-    @GetMapping(value = "/{chatRoomId}")
+    @GetMapping( "/{chatRoomId}")
     public Flux<Chat> getMessageByChannel(@PathVariable String chatRoomId) {
 
         return chatService.mFindByChatRoomId(chatRoomId).subscribeOn(Schedulers.boundedElastic());
