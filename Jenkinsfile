@@ -98,7 +98,7 @@ pipeline {
                     servicesList.each { service ->
                                             def serviceName = service.split('/')[1] // 서비스 이름 추출
                                             // 각 서비스의 Docker 이미지를 푸시
-                                            sh "docker push ${DOCKER_CREDENTIALS_ID}/nyamnyam-${serviceName}:latest"
+                                            sh "docker push ${DOCKER_CREDENTIALS_ID}/nyamnyam-${serviceName}:0.01"
                     }
                 }
             }
@@ -112,7 +112,7 @@ pipeline {
                             def servicesList = env.services.split(',')
                             servicesList.each { service ->
                                 def serviceName = service.split('/')[1] // 서비스 이름 추출
-                                sh "docker rmi ${DOCKER_CREDENTIALS_ID}/nyamnyam-${serviceName}:latest" // Clean up the pushed image
+                                sh "docker rmi ${DOCKER_CREDENTIALS_ID}/nyamnyam-${serviceName}:0.01" // Clean up the pushed image
                             }
                         }
                     }
