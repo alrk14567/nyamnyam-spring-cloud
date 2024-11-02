@@ -72,7 +72,7 @@ pipeline {
                     steps {
                         script {
                             dir('nyamnyam.kr') {
-                                sh "cd server/config-server && docker build -t ${DOCKER_CREDENTIALS_ID}/nyamnyam-config-server:latest ."
+                                sh "cd server/config-server && docker build -t ${DOCKER_CREDENTIALS_ID}/nyamnyam-config-server:0.01 ."
                             }
 
                             dir('nyamnyam.kr') {
