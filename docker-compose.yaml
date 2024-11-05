@@ -21,7 +21,7 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - ./mongodb:/data/nyamnyamdb
+      - ./mongodb:/data/test
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=1q2w3e4r
