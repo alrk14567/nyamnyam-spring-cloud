@@ -189,6 +189,7 @@ pipeline {
                         script {
                             withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
                                 sh '''
+                                kubectl apply -f nyamnyam.kr/deploy/db/mongodb-init-script.yaml --kubeconfig=$KUBECONFIG
                                 kubectl apply -f nyamnyam.kr/deploy/db/nyamnyam-mongodb-pvc.yaml --kubeconfig=$KUBECONFIG
                                 kubectl apply -f nyamnyam.kr/deploy/db/nyamnyam-mongodb.yaml --kubeconfig=$KUBECONFIG
                                 '''
