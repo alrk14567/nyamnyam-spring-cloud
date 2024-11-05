@@ -16,7 +16,6 @@ public class CorsConfiguration {
         org.springframework.web.cors.CorsConfiguration config = new org.springframework.web.cors.CorsConfiguration();
 
         config.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000",
-                "https://nyamnyam-vercel-8ftz8fj23-alrk14567s-projects.vercel.app", // Vercel 도메인 추가
                 "https://nyamnyam.kr",
                 "https://kidon.nyamnyam.kr", // 다른 도메인도 추가 가능
                 "https://www.kidon.nyamnyam.kr",
