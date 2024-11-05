@@ -17,6 +17,7 @@ public class CorsConfiguration {
 
         config.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000",
                 "https://nyamnyam.kr",
+                "https://api.nyamnyam.kr",
                 "https://kidon.nyamnyam.kr", // 다른 도메인도 추가 가능
                 "https://www.kidon.nyamnyam.kr",
                 "https://abc.nyamnyam.kr"));
