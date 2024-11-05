@@ -184,7 +184,30 @@ pipeline {
                         }
                     }
         }
+         stage('Deploy MongoDB') {
+                    steps {
+                        script {
+                            withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                                sh '''
+                                kubectl apply -f nyamnyam.kr/deploy/mongodb/nyamnyam-mongodb-pvc.yaml --kubeconfig=$KUBECONFIG
+                                kubectl apply -f nyamnyam.kr/deploy/mongodb/nyamnyam-mongodb.yaml --kubeconfig=$KUBECONFIG
+                                '''
+                            }
+                        }
+                    }
+         }
 
+         stage('Deploy MongoDB Service') {
+             steps {
+                 script {
+                     withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                         sh '''
+                         kubectl apply -f nyamnyam.kr/deploy/mongodb/nyamnyam-mongodb-service.yaml --kubeconfig=$KUBECONFIG
+                         '''
+                     }
+                 }
+             }
+         }
 
 
         stage('Deploy Ingress') {
