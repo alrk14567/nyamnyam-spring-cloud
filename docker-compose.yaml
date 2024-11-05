@@ -24,7 +24,7 @@ services:
       - ./mongodb:/data/nyamnyamdb
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=1q2w#E$R
+      - MONGO_INITDB_ROOT_PASSWORD=1q2w3e4r
       - MONGO_INITDB_DATABASE=test
     restart: always
 
