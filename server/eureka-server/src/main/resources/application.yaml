@@ -11,7 +11,7 @@ spring:
   config:
     import: "optional:configserver:http://config-server:8888/"
 
-##eureka:
+#eureka:
 #  client:
 #    register-with-eureka: false
 #    fetch-registry: false
