@@ -36,19 +36,17 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public Mono<Long> getUnreadMessageCountByChatRoomId(String chatRoomId, String nickname) {
         return chatRepository.findByChatRoomId(chatRoomId)
-                .sort((chat1, chat2) -> chat2.getCreatedAt().compareTo(chat1.getCreatedAt())) // 최신 메시지 우선 정렬
+                .sort((chat1, chat2) -> chat2.getCreatedAt().compareTo(chat1.getCreatedAt()))
                 .flatMap(chat -> {
                     Map<String, Boolean> readBy = chat.getReadBy();
-                    // readBy가 null이면 빈 맵으로 초기화
                     if (readBy == null) {
                         readBy = Map.of();
                     }
-                    // 읽지 않은 메시지 체크
                     return Mono.just(!Boolean.TRUE.equals(readBy.get(nickname)));
                 })
-                .takeUntil(isRead -> !isRead) // 읽지 않은 메시지를 찾을 때까지 반복
-                .count() // 읽지 않은 메시지 수를 세어 반환
-                .map(count -> count-1L);
+                .takeUntil(isRead -> !isRead)
+                .count()
+                .map(count -> count - 1L);
     }
 
 
@@ -83,11 +81,10 @@ public class ChatServiceImpl implements ChatService {
         return chatRepository.findById(chatId)
                 .flatMap(chat -> {
                     if (chat.getReadBy() == null) {
-                        chat.setReadBy(new HashMap<>()); // readBy 초기화
+                        chat.setReadBy(new HashMap<>());
                     }
-                    // 특정 사용자의 읽음 상태를 업데이트
-                    chat.getReadBy().put(nickname, true); // 닉네임을 읽음으로 설정
-                    return chatRepository.save(chat); // 업데이트된 메시지 저장
+                    chat.getReadBy().put(nickname, true);
+                    return chatRepository.save(chat);
                 });
     }
 }
